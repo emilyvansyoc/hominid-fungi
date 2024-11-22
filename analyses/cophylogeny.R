@@ -299,3 +299,39 @@ for(i in 1:length(gtrees)) {
 
 ## save for PACo run
 save(alltrees, file = "data/all_otu_subtrees.RData")
+
+## ---- get results ----
+
+## once PACo is done running (on the cluster)
+
+
+# get Parafit results
+load( "data/parafit_results_OTU.RData")
+# get sigs
+paradf <- paradf %>% 
+  mutate(pfdr = p.adjust(pval, method = "fdr"),
+         pbon = p.adjust(pval, method = "bonferroni"))
+
+## get PACo output:
+dir <- "data/PACo_OTU_quasi_p100_10-15-2024/" # not uploaded (tons of files)
+myfi <- list.files(dir, pattern = ".txt", full.names = TRUE)
+#myfi <- myfi[!str_detect(myfi, "p10_")]
+pacodf <- data.frame()
+for(i in 1:length(myfi)) {
+  fi <- read.table(myfi[i], sep = "\t", header = TRUE)
+  pacodf <- rbind(pacodf, fi)
+}
+pacodf <- pacodf %>% 
+  mutate(pfdr = p.adjust(paco.p, method = "fdr"),
+         pbon = p.adjust(paco.p, method = "bonferroni"))
+
+## join
+allotu <- paradf %>%
+  dplyr::select(otu, para.p = pval, parastat, para.pfdr = pfdr, para.pbon = pbon) %>% 
+  full_join(pacodf %>% dplyr::select(otu = subtree, paco.ss, paco.p, paco.pfdr = pfdr, paco.pbon = pbon)) %>% 
+  # calculate paco R2
+  mutate(pacor2 = 1-paco.ss)
+summary(allotu$pacor2)
+## get sigs from both
+bsigs <- allotu %>% filter(para.pfdr < 0.05 & paco.pfdr < 0.05)44 
+

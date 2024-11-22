@@ -385,10 +385,72 @@ analyses.</li>
 <p>Scripts used for analyses described in the paper, including
 phylosymbiosis, cophylogeny, and nucleotide sequence divergence.</p>
 <ol style="list-style-type: decimal">
-<li><code>run_randomtrees.sh</code>: sses script downloaded from <a href="https://github.com/awbrooks19/phylosymbiosis" class="uri">https://github.com/awbrooks19/phylosymbiosis</a> (written in
+<li><code>run_randomtrees.sh</code>: uses script downloaded from <a href="https://github.com/awbrooks19/phylosymbiosis" class="uri">https://github.com/awbrooks19/phylosymbiosis</a> (written in
 Python 2) to create random trees for statistical testing</li>
 <li><code>topological_congruency.R</code>: runs topological congruency
 tests using the framework implemented in Brooks et al 2016.</li>
+<li><code>pairwise_braycurtis.R</code>: pairwise tests of Bray-Curtis
+distances between hominids to support phylosymbiosis.<br />
+</li>
+<li><code>diff_relativeabundance.R</code>: differential relative
+abundance tests between humans and non-human primate hominids.<br />
+</li>
+<li><code>cophylogeny.R</code>: applies the cophylogeny framework to the
+fungal genera.</li>
+</ol>
+<div id="subfolder-cophylogeny-scripts" class="section level4">
+<h4>subfolder: “cophylogeny-scripts”</h4>
+<p>Runs a bunch of tiny little scripts to build the cophylogeny
+framework. See <code>cophylogeny.R</code> in the ‘analyses’ folder that
+puts them all together in an R wrapper.<br />
+1. <code>get_genus_ESVs.R</code>: from phyloseq object, get exact
+sequence variants from the sequencing data for each genus and write out
+to fasta file<br />
+2. <code>run-vsearch-derep.sh</code>: dereplicate exact sequence
+variants by length and identifier (decreases alignment size)<br />
+3. <code>mafft-alignments.sh</code>: align sequences with MAFFT and trim
+with clipkit<br />
+4. <code>run-seqkit-rename.sh</code>: uses seqkit to assign unique
+identifiers to all sequences; required by downstream tree building
+softwares<br />
+5. <code>make_NJ_trees.R</code>: make neighbor-joining trees using the
+ape R package<br />
+6. <code>replace_neg_branchlengths.R</code>: quick utility script to
+replace negative branch lengths; these are a side effect of
+neighbor-joining trees but can cause downstream issues<br />
+7. <code>get_OTU_subtrees.R</code>: from each genus-level tree, subset
+to the OTUs that have representation from all four hominids.<br />
+8. <code>run-PACO.R</code>: R script that is submitted as an HPC job to
+run PACo in a parallel loop (PACo is very slow on bigger trees)<br />
+9. <code>run-parafit.R</code>: run Parafit on each OTU tree<br />
+10. <code>results_paco-parafit.R</code>: combines results from PACo and
+Parafit, adjusts for multiple comparisons<br />
+11. <code>determine_randomchance.R</code>: shuffles tip labels from the
+fungal OTU trees to create 100 random trees, then run both PACo and
+Parafit to determine the odds of observing cophylogeny given random
+chance<br />
+12. <code>sequence_divergence.R</code>: calculates nucleotide sequence
+divergence and creates a calibration to estimate hominid speciation
+times</p>
+</div>
+</div>
+<div id="figures" class="section level3">
+<h3>figures</h3>
+<p>Scripts used to generate each of the main and supplementary figures.
+Most source the analysis scripts for data objects. Some figures are
+paneled in Adobe Illustrator or other schematic objects added in Adobe
+Illustrator; these are noted below. All other plot elements are
+generated in the R scripts.</p>
+<ol style="list-style-type: decimal">
+<li><code>fig1.R</code>: figure 1. Some text on the trees added in
+Illustrator.</li>
+<li><code>fig2.R</code>: figure 2. The green human icon and arrows are
+added in Illustrator.<br />
+</li>
+<li><code>fig3.R</code>: figure 3. The text on the schematic and fungal
+tree are added in Illustrator.<br />
+</li>
+<li><code>fig4.R</code>: figure 4.</li>
 </ol>
 </div>
 <div id="data" class="section level3">
@@ -404,7 +466,13 @@ distance matrix and hierarchical clustering to return a tree object
 (dendrogram)</li>
 <li><code>fx_myPval.R</code>: calculates a P value for topological
 congruency testing (formatted for R following framework of Brooks et al
-2016).</li>
+2016).<br />
+</li>
+<li><code>colors.R</code>: sets colors for host species for
+figures<br />
+</li>
+<li><code>fx_myDiv.R</code>: calculates sequence divergence using
+dist.dna in ape</li>
 </ol>
 </div>
 </div>
