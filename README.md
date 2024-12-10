@@ -30,7 +30,10 @@ Runs a bunch of tiny little scripts to build the cophylogeny framework. See `cop
 5f. `results_paco-parafit.R`: combines results from PACo and Parafit, adjusts for multiple comparisons  
 5g. `determine_randomchance.R`: shuffles tip labels from the fungal OTU trees to create 100 random trees, then run both PACo and Parafit to determine the odds of observing cophylogeny given random chance  
 
-
+### work in progress: snakemake pipeline to perform cophylogenetic "scan" across subtrees  
+In folder 'snakemake', a 'config.yaml', 'environment.yaml', and 'snakemake' file to automate the preparation of subtrees for the cophylogenetic scan. Create a conda or mamba environment with the `environment.yaml` file and run as below. Currently overly simplistic as a work in progress and will be updated.
+`conda env create --name mysnake --file environment.yaml`  
+`snakemake --cores 1 `
 
 ### figures  
 Scripts used to generate each of the main and supplementary figures. Most source the analysis scripts for data objects. Some figures are paneled in Adobe Illustrator or other schematic objects added in Adobe Illustrator; these are noted below. All other plot elements are generated in the R scripts.  
