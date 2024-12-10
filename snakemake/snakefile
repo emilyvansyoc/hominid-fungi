@@ -1,0 +1,48 @@
+# set configuration file
+##configfile: "config.yaml"
+
+#def get_input_fastas(wildcards):
+   # return config["samples"][wildcards.sample]
+
+(SAMPLES,) = glob_wildcards("data/{sample}.fasta")
+
+rule all:
+    input:
+        expand("data/{sample}.fasta", sample=SAMPLES),
+
+# dereplicate in vsearch
+rule dereplicate:
+    input:
+        #get_input_fastas
+        "data/{sample}.fasta"
+    output:
+        "derep/{sample}_derep.fasta"
+    shell:
+        "vsearch --derep_id {input} --output {output}"
+
+# align in mafft
+rule align:
+    input:
+        "derep/{sample}_derep.fasta"
+    output:
+        "align/{sample}_alignment.fasta"
+    shell:
+        "mafft --auto {input} > {output}"
+
+# trim in clipkit
+rule trim:
+    input:
+        "align/{sample}_alignment.fasta"
+    output:
+        "trim/{sample}_trimmed.fasta"
+    shell:
+        "clipkit {input} -o {output}"
+
+# rename with seqkit
+rule rename:
+    input:
+        "trim/{sample}_trimmed.fasta"
+    output:
+        "rename/{sample}_rename.fasta"
+    shell:
+        "seqkit rename -n {input} -o {output}"

@@ -1,0 +1,4 @@
+# list samples
+samples:
+  A: data/haplotypes_Candida.fasta
+  B: data/haplotypes_Cladosporium.fasta

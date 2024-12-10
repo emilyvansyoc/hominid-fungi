@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - snakemake-minimal >=8.4.4
+  - vsearch =2.23.0
+  - mafft =7.520
+  - clipkit =2.1.1
+  - seqkit
+  - iqtree =2.2.6
